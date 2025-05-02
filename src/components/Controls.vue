@@ -42,7 +42,8 @@ export default {
     const connectionStatus = ref("Disconnected");
 
     const connectWebSocket = () => {
-      ws.value = new WebSocket("ws://localhost:8000/ws/control/");
+      const url = extractDomain(import.meta.env.VITE_REMOTE_HOST);
+      ws.value = new WebSocket(`ws://${url}/ws/control/`);
 
       ws.value.onopen = () => {
         connectionStatus.value = "Connected";

@@ -7,12 +7,13 @@
 // Plugins
 import { registerPlugins } from "@/plugins";
 import "@mdi/font/css/materialdesignicons.css";
+import { createApp } from "vue";
+import App from "./App.vue";
+import axios from "axios";
 
 // Components
-import App from "./App.vue";
-
+axios.defaults.baseURL = `${import.meta.env.VITE_REMOTE_HOST}`;
 // Composables
-import { createApp } from "vue";
 
 const app = createApp(App);
 

@@ -18,8 +18,9 @@ export default {
     const socket = ref(null);
 
     onMounted(async () => {
+      const url = extractDomain(import.meta.env.VITE_REMOTE_HOST);
       // Open WebSocket connection
-      socket.value = new WebSocket("ws://localhost:8000/ws/video/");
+      socket.value = new WebSocket(`ws://${url}/ws/video/`);
 
       // Set up peer connection
       const pc = new RTCPeerConnection();
