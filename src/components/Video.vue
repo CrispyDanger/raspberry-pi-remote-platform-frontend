@@ -11,6 +11,7 @@
 
 <script>
 import { onMounted, ref } from "vue";
+import { extractDomain } from "@/utils/domainUtils";
 
 export default {
   setup() {

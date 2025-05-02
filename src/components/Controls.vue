@@ -34,6 +34,7 @@
 <script>
 import { onMounted, ref } from "vue";
 import { useGamepad } from "@vueuse/core";
+import { extractDomain } from "@/utils/domainUtils";
 
 export default {
   setup() {
