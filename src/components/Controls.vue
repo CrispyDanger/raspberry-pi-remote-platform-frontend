@@ -4,23 +4,31 @@
       <v-row>
         <v-spacer />
         <v-col>
-          <v-btn><v-icon>mdi-arrow-up</v-icon></v-btn>
+          <v-btn @click="sendCommand('forward')"
+            ><v-icon>mdi-arrow-up</v-icon></v-btn
+          >
         </v-col>
         <v-spacer />
       </v-row>
       <v-row>
         <v-col>
-          <v-btn><v-icon>mdi-arrow-left</v-icon></v-btn>
+          <v-btn @click="sendCommand('left')"
+            ><v-icon>mdi-arrow-left</v-icon></v-btn
+          >
         </v-col>
         <v-spacer />
         <v-col>
-          <v-btn><v-icon>mdi-arrow-right</v-icon></v-btn>
+          <v-btn @click="sendCommand('right')"
+            ><v-icon>mdi-arrow-right</v-icon></v-btn
+          >
         </v-col>
       </v-row>
       <v-row>
         <v-spacer />
         <v-col>
-          <v-btn><v-icon>mdi-arrow-down</v-icon></v-btn>
+          <v-btn @click="sendCommand('down')"
+            ><v-icon>mdi-arrow-down</v-icon></v-btn
+          >
         </v-col>
         <v-spacer />
       </v-row>
@@ -32,41 +40,53 @@
   </div>
 </template>
 <script>
-import { onMounted, ref } from "vue";
+import { onMounted, onUnmounted, ref } from "vue";
 import { useGamepad } from "@vueuse/core";
 import { extractDomain } from "@/utils/domainUtils";
+import { send } from "vite";
 
 export default {
   setup() {
     const { gamepad, isConnected } = useGamepad();
-    const ws = ref(null);
+    const websocket = ref(null);
     const connectionStatus = ref("Disconnected");
 
     const connectWebSocket = () => {
       const url = extractDomain(import.meta.env.VITE_REMOTE_HOST);
-      ws.value = new WebSocket(`ws://${url}/ws/control/`);
+      websocket.value = new WebSocket(`ws://${url}/ws/control/`);
 
-      ws.value.onopen = () => {
+      websocket.value.onopen = () => {
         connectionStatus.value = "Connected";
         console.log("WebSocket connected");
       };
 
-      ws.value.onclose = () => {
+      websocket.value.onclose = () => {
         connectionStatus.value = "Disconnected";
         console.log("WebSocket disconnected");
       };
 
-      ws.value.onerror = (error) => {
+      websocket.value.onerror = (error) => {
         connectionStatus.value = "Error";
         console.error("WebSocket error:", error);
       };
     };
 
+    const sendCommand = (command) => {
+      websocket.send(JSON.stringify({ action: command }));
+    };
+
     onMounted(() => {
       connectWebSocket();
     });
+
+    onUnmounted(() => {
+      if (websocket) {
+        websocket.value.close();
+      }
+    });
     return {
       isConnected,
+      sendCommand,
     };
   },
 };
