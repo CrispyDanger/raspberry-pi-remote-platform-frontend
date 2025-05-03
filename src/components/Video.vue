@@ -4,6 +4,7 @@
       ref="video"
       autoplay
       playsinline
+      muted
       style="width: 50%; height: auto; border: 1px solid red"
     ></video>
   </v-container>
@@ -17,57 +18,75 @@ export default {
   setup() {
     const video = ref(null);
     const socket = ref(null);
+    const pc = ref(null);
 
     onMounted(async () => {
       const url = extractDomain(import.meta.env.VITE_REMOTE_HOST);
-      // Open WebSocket connection
+
+      // Connect to WebSocket server
       socket.value = new WebSocket(`ws://${url}/ws/video/`);
 
-      // Set up peer connection
-      const pc = new RTCPeerConnection();
-
-      // Set up video receiver
-      pc.addTransceiver("video", { direction: "recvonly" });
-
-      // Handle incoming video stream
-      pc.ontrack = (event) => {
-        console.log("Received track:", event.streams[0]); // Log the stream
-        if (video.value) {
-          video.value.srcObject = event.streams[0];
-        }
-      };
-
-      // WebSocket opened
       socket.value.onopen = async () => {
-        console.log("WebSocket connected.");
+        console.log("WebSocket connected");
 
-        // Create and send the offer only after WebSocket is open
-        const offer = await pc.createOffer();
-        await pc.setLocalDescription(offer);
+        // Create peer connection
+        pc.value = new RTCPeerConnection();
+
+        // Handle incoming ICE candidates if needed later
+
+        // Set up video receiver
+        pc.value.addTransceiver("video", { direction: "recvonly" });
+
+        pc.value.ontrack = (event) => {
+          console.log("Received track event:", event);
+
+          if (event.streams.length > 0) {
+            const stream = event.streams[0];
+            const videoTracks = stream.getVideoTracks();
+            console.log("Video tracks received:", videoTracks);
+
+            if (videoTracks.length > 0 && video.value) {
+              video.value.srcObject = stream;
+            } else {
+              console.warn("No video tracks found!");
+            }
+          } else {
+            console.warn("No streams attached to track event");
+          }
+        };
+
+        pc.value.oniceconnectionstatechange = () => {
+          console.log("ICE connection state:", pc.value.iceConnectionState);
+        };
+
+        const offer = await pc.value.createOffer();
+        await pc.value.setLocalDescription(offer);
 
         socket.value.send(
           JSON.stringify({
-            sdp: pc.localDescription.sdp,
-            type: pc.localDescription.type,
+            sdp: pc.value.localDescription.sdp,
+            type: pc.value.localDescription.type,
           })
         );
       };
 
-      // Handle incoming answer from the server
       socket.value.onmessage = async (event) => {
-        console.log("Received message:", event.data); // Log incoming message
+        console.log("Received message:", event.data);
+
         const data = JSON.parse(event.data);
-        const answer = new RTCSessionDescription(data);
-        await pc.setRemoteDescription(answer);
+
+        if (data.sdp) {
+          const remoteDesc = new RTCSessionDescription(data);
+          await pc.value.setRemoteDescription(remoteDesc);
+        }
       };
 
-      // Handle WebSocket errors and closure
       socket.value.onerror = (error) => {
         console.error("WebSocket error:", error);
       };
 
       socket.value.onclose = () => {
-        console.log("WebSocket connection closed.");
+        console.log("WebSocket closed");
       };
     });
 
