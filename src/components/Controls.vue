@@ -48,31 +48,31 @@ import { send } from "vite";
 export default {
   setup() {
     const { gamepad, isConnected } = useGamepad();
-    const websocket = ref(null);
+    const controlWebsocket = ref(null);
     const connectionStatus = ref("Disconnected");
 
     const connectWebSocket = () => {
       const url = extractDomain(import.meta.env.VITE_REMOTE_HOST);
-      websocket.value = new WebSocket(`ws://${url}/ws/control/`);
+      controlWebsocket.value = new WebSocket(`ws://${url}/ws/control/`);
 
-      websocket.value.onopen = () => {
+      controlWebsocket.value.onopen = () => {
         connectionStatus.value = "Connected";
         console.log("WebSocket connected");
       };
 
-      websocket.value.onclose = () => {
+      controlWebsocket.value.onclose = () => {
         connectionStatus.value = "Disconnected";
         console.log("WebSocket disconnected");
       };
 
-      websocket.value.onerror = (error) => {
+      controlWebsocket.value.onerror = (error) => {
         connectionStatus.value = "Error";
         console.error("WebSocket error:", error);
       };
     };
 
     const sendCommand = (command) => {
-      websocket.send(JSON.stringify({ action: command }));
+      controlWebsocket.send(JSON.stringify({ action: command }));
     };
 
     onMounted(() => {
@@ -80,8 +80,8 @@ export default {
     });
 
     onUnmounted(() => {
-      if (websocket) {
-        websocket.value.close();
+      if (controlWebsocket) {
+        controlWebsocket.value.close();
       }
     });
     return {
