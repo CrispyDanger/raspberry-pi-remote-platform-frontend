@@ -7,6 +7,9 @@ import ViteFonts from 'unplugin-fonts/vite'
 // Utilities
 import { defineConfig } from 'vite'
 import { fileURLToPath, URL } from 'node:url'
+import os from 'os'
+
+const hostname = os.hostname()
 
 // https://vitejs.dev/config/
 export default defineConfig({
@@ -19,10 +22,12 @@ export default defineConfig({
     Components(),
     ViteFonts({
       google: {
-        families: [{
-          name: 'Roboto',
-          styles: 'wght@100;300;400;500;700;900',
-        }],
+        families: [
+          {
+            name: 'Roboto',
+            styles: 'wght@100;300;400;500;700;900',
+          },
+        ],
       },
     }),
   ],
@@ -34,18 +39,12 @@ export default defineConfig({
     alias: {
       '@': fileURLToPath(new URL('./src', import.meta.url)),
     },
-    extensions: [
-      '.js',
-      '.json',
-      '.jsx',
-      '.mjs',
-      '.ts',
-      '.tsx',
-      '.vue',
-    ],
+    extensions: ['.js', '.json', '.jsx', '.mjs', '.ts', '.tsx', '.vue'],
   },
   server: {
     port: 3000,
+    host: true,
+    allowedHosts: [hostname],
   },
   css: {
     preprocessorOptions: {
@@ -53,7 +52,7 @@ export default defineConfig({
         api: 'modern-compiler',
       },
       scss: {
-        api:'modern-compiler',
+        api: 'modern-compiler',
       },
     },
   },
