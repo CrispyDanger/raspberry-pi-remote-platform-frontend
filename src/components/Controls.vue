@@ -34,8 +34,7 @@
       </v-row>
     </v-card>
     <v-card>
-      <a>Gamepad Connected: </a>
-      <a color="green">{{ isConnected }}</a>
+      <a>Gamepad Connected: {{ isConnected }}</a>
     </v-card>
   </div>
 </template>
