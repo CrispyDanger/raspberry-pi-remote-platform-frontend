@@ -43,7 +43,6 @@
 import { onMounted, onUnmounted, ref } from "vue";
 import { useGamepad } from "@vueuse/core";
 import { extractDomain } from "@/utils/domainUtils";
-import { send } from "vite";
 
 export default {
   setup() {

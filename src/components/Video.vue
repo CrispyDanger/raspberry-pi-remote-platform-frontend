@@ -11,7 +11,7 @@
 </template>
 
 <script>
-import { onMounted, ref } from "vue";
+import { onMounted, ref, onUnmounted } from "vue";
 import { extractDomain } from "@/utils/domainUtils";
 
 export default {
@@ -88,6 +88,12 @@ export default {
       socket.value.onclose = () => {
         console.log("WebSocket closed");
       };
+    });
+
+    onUnmounted(() => {
+      if (socket) {
+        socket.value.close();
+      }
     });
 
     return {
