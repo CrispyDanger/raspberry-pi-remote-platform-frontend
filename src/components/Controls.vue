@@ -49,6 +49,8 @@ export default {
     const controlWebsocket = ref(null);
     const connectionStatus = ref("Disconnected");
 
+    console.log("GAMEPAD:", isConnected);
+
     const connectWebSocket = () => {
       const url = extractDomain(import.meta.env.VITE_REMOTE_HOST);
       controlWebsocket.value = new WebSocket(`ws://${url}/ws/control/`);
