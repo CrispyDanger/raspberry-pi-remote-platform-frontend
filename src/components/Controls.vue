@@ -71,7 +71,7 @@ export default {
     };
 
     const sendCommand = (command) => {
-      controlWebsocket.send(JSON.stringify({ action: command }));
+      controlWebsocket.value.send(JSON.stringify({ action: command }));
     };
 
     onMounted(() => {
