@@ -40,7 +40,7 @@
   </div>
 </template>
 <script>
-import { onMounted, onUnmounted, ref } from "vue";
+import { onMounted, onUnmounted, ref, computed } from "vue";
 import { useGamepad } from "@vueuse/core";
 import { extractDomain } from "@/utils/domainUtils";
 
