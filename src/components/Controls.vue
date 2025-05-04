@@ -35,6 +35,7 @@
     </v-card>
     <v-card>
       <a>Gamepad Connected: {{ isConnected }}</a>
+      <div>{{ gamepad }}</div>
     </v-card>
   </div>
 </template>
@@ -45,11 +46,15 @@ import { extractDomain } from "@/utils/domainUtils";
 
 export default {
   setup() {
-    const { gamepad, isConnected } = useGamepad();
+    const { gamepads, isConnected } = useGamepad();
     const controlWebsocket = ref(null);
     const connectionStatus = ref("Disconnected");
 
     console.log("GAMEPAD:", isConnected);
+
+    const gamepad = computed(() =>
+      gamepads.value.find((g) => g.mapping === "standard")
+    );
 
     const connectWebSocket = () => {
       const url = extractDomain(import.meta.env.VITE_REMOTE_HOST);
@@ -87,6 +92,7 @@ export default {
     return {
       isConnected,
       sendCommand,
+      gamepad,
     };
   },
 };
