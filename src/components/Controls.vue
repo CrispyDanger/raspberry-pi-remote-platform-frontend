@@ -5,8 +5,8 @@
         <v-spacer />
         <v-col>
           <v-btn
-            @mouseup="sendCommand('forward')"
-            @mousedown="sendCommand('stop')"
+            @mousedown="sendCommand('forward')"
+            @mouseup="sendCommand('stop')"
             @mouseleave="sendCommand('stop')"
             ><v-icon>mdi-arrow-up</v-icon></v-btn
           >
@@ -15,13 +15,19 @@
       </v-row>
       <v-row>
         <v-col>
-          <v-btn @click="sendCommand('left')"
+          <v-btn
+            @mousedown="sendCommand('left')"
+            @mouseup="sendCommand('stop')"
+            @mouseleave="sendCommand('stop')"
             ><v-icon>mdi-arrow-left</v-icon></v-btn
           >
         </v-col>
         <v-spacer />
         <v-col>
-          <v-btn @click="sendCommand('right')"
+          <v-btn
+            @mousedown="sendCommand('right')"
+            @mouseup="sendCommand('stop')"
+            @mouseleave="sendCommand('stop')"
             ><v-icon>mdi-arrow-right</v-icon></v-btn
           >
         </v-col>
@@ -29,7 +35,10 @@
       <v-row>
         <v-spacer />
         <v-col>
-          <v-btn @click="sendCommand('down')"
+          <v-btn
+            @mousedown="sendCommand('down')"
+            @mouseup="sendCommand('stop')"
+            @mouseleave="sendCommand('stop')"
             ><v-icon>mdi-arrow-down</v-icon></v-btn
           >
         </v-col>
