@@ -4,7 +4,10 @@
       <v-row>
         <v-spacer />
         <v-col>
-          <v-btn @click="sendCommand('forward')"
+          <v-btn
+            @mouseup="sendCommand('forward')"
+            @mousedown="sendCommand('stop')"
+            @mouseleave="sendCommand('stop')"
             ><v-icon>mdi-arrow-up</v-icon></v-btn
           >
         </v-col>
