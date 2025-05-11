@@ -1,13 +1,13 @@
 <template>
-  <v-container>
-    <video
-      ref="video"
-      autoplay
-      playsinline
-      muted
-      style="width: 50%; height: auto; border: 1px solid red"
-    ></video>
-  </v-container>
+  <!-- <v-container> -->
+  <video
+    ref="video"
+    autoplay
+    playsinline
+    muted
+    style="width: 50%; height: auto; border: 1px solid red"
+  ></video>
+  <!-- </v-container> -->
 </template>
 
 <script>

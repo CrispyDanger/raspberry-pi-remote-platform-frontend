@@ -1,6 +1,10 @@
 <template>
-  <Video></Video>
-  <Controls />
+  <div class="d-flex align-center justify-center pt-5">
+    <Video></Video>
+  </div>
+  <div class="d-flex align-center justify-center">
+    <Controls />
+  </div>
 </template>
 
 <script>
