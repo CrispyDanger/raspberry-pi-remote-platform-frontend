@@ -7,7 +7,6 @@
           <v-btn
             @mousedown="sendCommand('forward')"
             @mouseup="sendCommand('stop')"
-            @mouseleave="sendCommand('stop')"
             ><v-icon>mdi-arrow-up</v-icon></v-btn
           >
         </v-col>
@@ -15,10 +14,7 @@
       </v-row>
       <v-row>
         <v-col>
-          <v-btn
-            @mousedown="sendCommand('left')"
-            @mouseup="sendCommand('stop')"
-            @mouseleave="sendCommand('stop')"
+          <v-btn @mousedown="sendCommand('left')" @mouseup="sendCommand('stop')"
             ><v-icon>mdi-arrow-left</v-icon></v-btn
           >
         </v-col>
@@ -27,7 +23,6 @@
           <v-btn
             @mousedown="sendCommand('right')"
             @mouseup="sendCommand('stop')"
-            @mouseleave="sendCommand('stop')"
             ><v-icon>mdi-arrow-right</v-icon></v-btn
           >
         </v-col>
@@ -35,10 +30,7 @@
       <v-row>
         <v-spacer />
         <v-col>
-          <v-btn
-            @mousedown="sendCommand('down')"
-            @mouseup="sendCommand('stop')"
-            @mouseleave="sendCommand('stop')"
+          <v-btn @mousedown="sendCommand('down')" @mouseup="sendCommand('stop')"
             ><v-icon>mdi-arrow-down</v-icon></v-btn
           >
         </v-col>
@@ -46,8 +38,8 @@
       </v-row>
     </v-card>
     <v-card>
-      <a>Gamepad Connected: {{ isConnected }}</a>
-      <div>{{ gamepad }}</div>
+      <v-btn>Start</v-btn>
+      <v-btn @click="sendCommand('stop')">Stop</v-btn>
     </v-card>
   </div>
 </template>
