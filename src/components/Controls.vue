@@ -45,7 +45,7 @@
         min="1"
         max="2"
         step="0.1"
-        :precision="1"
+        :precision="2"
       ></v-number-input>
     </v-card>
   </div>
@@ -57,7 +57,7 @@ import { extractDomain } from "@/utils/domainUtils";
 export default {
   setup() {
     const state = reactive({
-      speed: 1,
+      speed: 1.0,
     });
 
     const controlWebsocket = ref(null);
