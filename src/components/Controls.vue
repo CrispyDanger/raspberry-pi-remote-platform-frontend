@@ -40,25 +40,22 @@
     <v-card>
       <v-btn>Start</v-btn>
       <v-btn @click="sendCommand('stop')">Stop</v-btn>
+      <v-number-input v-model="state.speed"></v-number-input>
     </v-card>
   </div>
 </template>
 <script>
-import { onMounted, onUnmounted, ref, computed } from "vue";
-import { useGamepad } from "@vueuse/core";
+import { onMounted, onUnmounted, ref, reactive } from "vue";
 import { extractDomain } from "@/utils/domainUtils";
 
 export default {
   setup() {
-    const { gamepads, isConnected } = useGamepad();
+    const state = reactive({
+      speed: 1,
+    });
+
     const controlWebsocket = ref(null);
     const connectionStatus = ref("Disconnected");
-
-    console.log("GAMEPAD:", isConnected);
-
-    const gamepad = computed(() =>
-      gamepads.value.find((g) => g.mapping === "standard")
-    );
 
     const connectWebSocket = () => {
       const url = extractDomain(import.meta.env.VITE_REMOTE_HOST);
@@ -94,9 +91,8 @@ export default {
       }
     });
     return {
-      isConnected,
       sendCommand,
-      gamepad,
+      state,
     };
   },
 };
