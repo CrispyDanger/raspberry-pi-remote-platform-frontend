@@ -45,7 +45,7 @@
         min="1"
         max="2"
         step="0.1"
-        precision="1"
+        :precision="1"
       ></v-number-input>
     </v-card>
   </div>
@@ -84,7 +84,9 @@ export default {
     };
 
     const sendCommand = (command) => {
-      controlWebsocket.value.send(JSON.stringify({ action: command }));
+      controlWebsocket.value.send(
+        JSON.stringify({ action: command, speed: state.speed })
+      );
     };
 
     onMounted(() => {
