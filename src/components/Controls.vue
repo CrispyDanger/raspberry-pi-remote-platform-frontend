@@ -40,7 +40,13 @@
     <v-card>
       <v-btn>Start</v-btn>
       <v-btn @click="sendCommand('stop')">Stop</v-btn>
-      <v-number-input v-model="state.speed"></v-number-input>
+      <v-number-input
+        v-model="state.speed"
+        min="1"
+        max="2"
+        step="0.1"
+        precision="1"
+      ></v-number-input>
     </v-card>
   </div>
 </template>
